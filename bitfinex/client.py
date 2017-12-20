@@ -339,7 +339,20 @@ class TradeClient:
 
         return json_resp
 
+    def withdraw(self, amount, walletto, withdraw_type='bitcoin', walletselected="exchange"):
+        payload = {
+            "request":"/v1/withdraw",
+            "withdraw_type": withdraw_type,
+            "walletselected":walletselected,
+            "amount": amount,
+            "address": walletto,
+            "nonce": self._nonce
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + '/withdraw', headers=signed_payload, verify=True)
+        json_resp = r.json()
 
+        return json_resp
 
 class Client:
     """
